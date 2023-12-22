@@ -1,8 +1,7 @@
-import Image from "next/image";
-import { Inter } from "next/font/google";
-import Head from "next/head";
+import { executeTransaction } from "@/utils/executeTransaction";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { useState, useEffect } from "react";
+import Head from "next/head";
+import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 
 export default function Home() {
@@ -27,6 +26,15 @@ export default function Home() {
           address: address,
         }),
       });
+      const data = await res.json();
+      console.log(data);
+      const txHash = await executeTransaction(
+        data.proof.proof,
+        data.proof.publicSignals,
+        address as string,
+        secret
+      );
+      window.alert(`Transaction Hash: ${txHash}`);
     } catch (err) {
       console.log(err);
     }
@@ -49,7 +57,6 @@ export default function Home() {
               ZK Capture The Flag{" "}
             </h1>
             <h2 className="text-xl font-semibold text-center p-4">
-              {" "}
               Find the text associated with the following hash:
               3607056778794995795434385085847334626017449707154072104308864676240828390282
             </h2>

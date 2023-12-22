@@ -26,6 +26,9 @@ dependencies:
   '@types/snarkjs':
     specifier: ^0.7.7
     version: 0.7.7
+  '@wagmi/core':
+    specifier: ^1.4.12
+    version: 1.4.12(@types/react@18.0.0)(react@18.0.0)(typescript@5.0.2)(viem@1.20.3)
   axios:
     specifier: ^1.6.2
     version: 1.6.2
@@ -35,6 +38,9 @@ dependencies:
   circomlibjs:
     specifier: ^0.1.7
     version: 0.1.7
+  core:
+    specifier: link:@types/@wagmi/core
+    version: link:@types/@wagmi/core
   ethers:
     specifier: ^5
     version: 5.7.2
@@ -1178,14 +1184,14 @@ packages:
     resolution: {integrity: sha512-N1ZhksgwD3OBlwTv3R6KFEcPojl/W4ElJOeCZdi+vuI5QmTFwLq3OFf2zd2ROpKvxFdgZ6hUpb0dx9bVNEwYCA==}
     dependencies:
       '@noble/curves': 1.2.0
-      '@noble/hashes': 1.3.2
+      '@noble/hashes': 1.3.3
       '@scure/base': 1.1.5
     dev: false
 
   /@scure/bip39@1.2.1:
     resolution: {integrity: sha512-Z3/Fsz1yr904dduJD0NpiyRHhRYHdcnyh73FZWiV+/qhWi83wNJ3NWolYqCEN+ZWsUz2TWwajJggcRE9r1zUYg==}
     dependencies:
-      '@noble/hashes': 1.3.2
+      '@noble/hashes': 1.3.3
       '@scure/base': 1.1.5
     dev: false
 

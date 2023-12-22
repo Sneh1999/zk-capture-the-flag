@@ -1,14 +1,6 @@
 import path from "path";
 import * as snarkjs from "snarkjs";
-import { buildPoseidon } from "circomlibjs";
-
-const hash = async (secret: bigint[]) => {
-  const p = buildPoseidon();
-
-  const poseidon = await p;
-
-  return poseidon.F.toObject(poseidon(secret));
-};
+import { SECRET_HASH } from "./constants";
 
 export const generateProof = async (secret: string, address: string) => {
   const wasmPath = path.join(process.cwd(), "circuits/build/ctf_js/ctf.wasm");
@@ -17,13 +9,9 @@ export const generateProof = async (secret: string, address: string) => {
     "circuits/build/proving_key.zkey"
   );
 
-  const hashedSecret = await hash([BigInt(secret)]);
-
-  console.log(hashedSecret);
   const inputs = {
     secret: secret,
-    secretHash:
-      "3607056778794995795434385085847334626017449707154072104308864676240828390282",
+    secretHash: SECRET_HASH,
     address: address,
   };
 
@@ -39,13 +27,15 @@ export const generateProof = async (secret: string, address: string) => {
       publicSignals
     );
 
-    const calldata = calldataBlob.split(",");
+    console.log(calldataBlob);
 
-    console.log(calldata);
+    const calldata = calldataBlob.split("]");
+
+    console.log(`proof: ${calldata[0]}`);
 
     return {
-      proof: calldata[0],
-      publicSignals: JSON.parse(calldata[1]),
+      proof: JSON.parse(calldata[0] + "]"),
+      publicSignals: JSON.parse(calldata[1] + "]"),
     };
   } catch (error) {
     console.error(error);

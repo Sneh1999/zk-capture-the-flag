@@ -11,26 +11,22 @@ contract CTF is ERC20 {
             3607056778794995795434385085847334626017449707154072104308864676240828390282
         );
     PlonkVerifier public verifier;
-    mapping(uint256 => bool) public usedIndexes;
+    mapping(uint256 => bool) public usedNonces;
 
     constructor(address _verifier) ERC20("TokenMint", "TM") {
         verifier = PlonkVerifier(_verifier);
     }
 
     function mintTokenWithProof(
-        uint256 index,
-        uint256[24] calldata proof
+        uint256 nonce,
+        uint256[24] calldata proof,
+        uint256[3] calldata _pubSignals
     ) public {
-        require(!usedIndexes[index], "index already used");
+        require(!usedNonces[nonce], "nonce already used");
 
-        uint256[3] memory pubSignals;
-        pubSignals[0] = hash;
-        pubSignals[1] = index;
-        pubSignals[2] = uint256(uint160(msg.sender));
-
-        require(verifier.verifyProof(proof, pubSignals), "invalid proof");
+        require(verifier.verifyProof(proof, _pubSignals), "invalid proof");
 
         _mint(msg.sender, 1);
-        usedIndexes[index] = true;
+        usedNonces[nonce] = true;
     }
 }

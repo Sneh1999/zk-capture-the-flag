@@ -5,24 +5,24 @@ include "../node_modules/circomlib/circuits/poseidon.circom";
 
 template Main () {
     // public inputs
-    signal input hash;
-    signal output index;
+    signal input secretHash;
+    signal output nonce;
     signal input address;
 
     // private inputs
-    signal input hashedInput;
+    signal input secret;
 
-    component hasher = Poseidon(1);
-    hasher.inputs[0] <== hashedInput;
+    component secretHasher = Poseidon(1);
+    secretHasher.inputs[0] <== secret;
 
-    hasher.out === hash;
+    secretHasher.out === secretHash;
 
-    // create a unique index for each address
-    component indexHasher = Poseidon(2);
-    indexHasher.inputs[0] <== address;
-    indexHasher.inputs[1] <== hashedInput;
+    // create a unique nonce 
+    component nonceHasher = Poseidon(2);
+    nonceHasher.inputs[0] <== address;
+    nonceHasher.inputs[1] <== secret;
 
-    index <== indexHasher.out;
+    nonce <== nonceHasher.out;
 }
 
-component main {public [hash, address]} = Main();
+component main {public [secretHash, address]} = Main();

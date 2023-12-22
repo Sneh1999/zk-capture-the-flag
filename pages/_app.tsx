@@ -1,23 +1,18 @@
 import "@/styles/globals.css";
+import "@rainbow-me/rainbowkit/styles.css";
 import type { AppProps } from "next/app";
-import {
-  WagmiConfig,
-  configureChains,
-  createConfig,
-  usePublicClient,
-} from "wagmi";
+
+import { RainbowKitProvider, getDefaultWallets } from "@rainbow-me/rainbowkit";
+import { WagmiConfig, configureChains, createConfig } from "wagmi";
 import { goerli } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
-import {
-  darkTheme,
-  getDefaultWallets,
-  RainbowKitProvider,
-} from "@rainbow-me/rainbowkit";
 
 const { chains, publicClient } = configureChains([goerli], [publicProvider()]);
 
+console.log(`${process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID}`);
+
 const { connectors } = getDefaultWallets({
-  appName: "scw",
+  appName: "zk-capture-the-flag",
   projectId: `${process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID}`,
   chains,
 });
@@ -31,7 +26,7 @@ const wagmiConfig = createConfig({
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <WagmiConfig config={wagmiConfig}>
-      <RainbowKitProvider chains={chains} theme={darkTheme()}>
+      <RainbowKitProvider chains={chains}>
         <Component {...pageProps} />
       </RainbowKitProvider>
     </WagmiConfig>

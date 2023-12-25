@@ -4,7 +4,6 @@ import { hash } from "./hash";
 
 export const executeTransaction = async (
   proof: any,
-  publicSignals: any,
   address: string,
   secret: string
 ) => {
@@ -14,7 +13,7 @@ export const executeTransaction = async (
       address: CTF_ADDRESS,
       abi: CTF_ABI,
       functionName: "mintTokenWithProof",
-      args: [nonce, proof, publicSignals],
+      args: [nonce, proof],
     });
 
     const res = await writeContract(contract);

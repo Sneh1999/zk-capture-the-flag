@@ -3,13 +3,10 @@ import "@rainbow-me/rainbowkit/styles.css";
 import type { AppProps } from "next/app";
 
 import { RainbowKitProvider, getDefaultWallets } from "@rainbow-me/rainbowkit";
-import { WagmiConfig, configureChains, createConfig } from "wagmi";
-import { goerli } from "wagmi/chains";
+import { WagmiConfig, configureChains, createConfig, sepolia } from "wagmi";
 import { publicProvider } from "wagmi/providers/public";
 
-const { chains, publicClient } = configureChains([goerli], [publicProvider()]);
-
-console.log(`${process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID}`);
+const { chains, publicClient } = configureChains([sepolia], [publicProvider()]);
 
 const { connectors } = getDefaultWallets({
   appName: "zk-capture-the-flag",
@@ -18,7 +15,7 @@ const { connectors } = getDefaultWallets({
 });
 
 const wagmiConfig = createConfig({
-  autoConnect: true,
+  autoConnect: false,
   connectors,
   publicClient,
 });

@@ -43,26 +43,7 @@ export const TerminalController: React.FC = (props = {}) => {
   };
 
   const submitAnswer = async (secret: string) => {
-    if (!address) return;
-
-    try {
-      setIsLoading(true);
-      secret = secret.trim().toLowerCase();
-      const proof = await generateProof(secret, address);
-      const txHash = await executeTransaction(proof, address, secret);
-
-      setOutputMessages([
-        ...outputMessages,
-        `Congratulations, hunter! You have captured the flag!`,
-        `View your transaction: https://sepolia.etherscan.io/tx/${txHash}`,
-      ]);
-    } catch (error) {
-      console.error(error);
-
-      setOutputMessages([...outputMessages, `Better luck next time, hunter.`]);
-    } finally {
-      setIsLoading(false);
-    }
+    throw new Error("Not implemented");
   };
 
   return (

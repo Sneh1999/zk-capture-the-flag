@@ -5,4 +5,4 @@ libs = ['lib']
 
 # Add this 
 [rpc_endpoints]
-goerli = "${GOERLI_RPC_URL}"
+sepolia = "${RPC_URL}"

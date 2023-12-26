@@ -6,11 +6,11 @@ import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "./PlonkVerifier.sol";
 
 contract CTF is ERC20 {
-    uint256 public hash =
-        uint256(
-            3607056778794995795434385085847334626017449707154072104308864676240828390282
-        );
     PlonkVerifier public verifier;
+
+    uint256 public immutable hash =
+        15514860137957992411716963528347796652230224498239149843465251542348029236386;
+
     mapping(uint256 => bool) public usedNonces;
 
     constructor(address _verifier) ERC20("TokenMint", "TM") {
@@ -19,14 +19,19 @@ contract CTF is ERC20 {
 
     function mintTokenWithProof(
         uint256 nonce,
-        uint256[24] calldata proof,
-        uint256[3] calldata _pubSignals
+        uint256[24] calldata proof
     ) public {
         require(!usedNonces[nonce], "nonce already used");
 
-        require(verifier.verifyProof(proof, _pubSignals), "invalid proof");
+        uint256[3] memory publicInputs = [
+            nonce,
+            hash,
+            uint256(uint160(msg.sender))
+        ];
 
-        _mint(msg.sender, 1);
+        require(verifier.verifyProof(proof, publicInputs), "invalid proof");
+
+        _mint(msg.sender, 1 ether);
         usedNonces[nonce] = true;
     }
 }

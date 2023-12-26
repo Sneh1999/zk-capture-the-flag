@@ -2,7 +2,11 @@ import "@/styles/globals.css";
 import "@rainbow-me/rainbowkit/styles.css";
 import type { AppProps } from "next/app";
 
-import { RainbowKitProvider, getDefaultWallets } from "@rainbow-me/rainbowkit";
+import {
+  RainbowKitProvider,
+  getDefaultWallets,
+  midnightTheme,
+} from "@rainbow-me/rainbowkit";
 import { WagmiConfig, configureChains, createConfig, sepolia } from "wagmi";
 import { publicProvider } from "wagmi/providers/public";
 
@@ -15,7 +19,7 @@ const { connectors } = getDefaultWallets({
 });
 
 const wagmiConfig = createConfig({
-  autoConnect: false,
+  autoConnect: true,
   connectors,
   publicClient,
 });
@@ -23,7 +27,7 @@ const wagmiConfig = createConfig({
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <WagmiConfig config={wagmiConfig}>
-      <RainbowKitProvider chains={chains}>
+      <RainbowKitProvider chains={chains} theme={midnightTheme()}>
         <Component {...pageProps} />
       </RainbowKitProvider>
     </WagmiConfig>

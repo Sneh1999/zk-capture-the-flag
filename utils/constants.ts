@@ -51,7 +51,6 @@ export const CTF_ABI = [
     inputs: [
       { name: "nonce", type: "uint256", internalType: "uint256" },
       { name: "proof", type: "uint256[24]", internalType: "uint256[24]" },
-      { name: "_pubSignals", type: "uint256[3]", internalType: "uint256[3]" },
     ],
     outputs: [],
     stateMutability: "nonpayable",
@@ -195,6 +194,6 @@ export const CTF_ABI = [
 ] as const;
 
 export const SECRET_HASH =
-  "3607056778794995795434385085847334626017449707154072104308864676240828390282";
+  "15514860137957992411716963528347796652230224498239149843465251542348029236386";
 
-export const CTF_ADDRESS = "0x4c63aBF753a6367B4668Ea72A6cb1D44F68D2caa";
+export const CTF_ADDRESS = "0x4221C8A2fD82f6949Cb60d35405f5a99e8E1016A";

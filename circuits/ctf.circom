@@ -4,9 +4,9 @@ include "../node_modules/circomlib/circuits/poseidon.circom";
 
 
 template Main () {
-    // public inputs
-    signal input secretHash;
+    // public signals
     signal output nonce;
+    signal input secretHash;
     signal input address;
 
     // private inputs

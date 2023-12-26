@@ -1,16 +1,15 @@
-import path from "path";
 import * as snarkjs from "snarkjs";
 import { SECRET_HASH } from "./constants";
 
 export const generateProof = async (secret: string, address: string) => {
-  const wasmPath = path.join(process.cwd(), "circuits/build/ctf_js/ctf.wasm");
-  const provingKey = path.join(
-    process.cwd(),
-    "circuits/build/proving_key.zkey"
-  );
+  const wasmFileRes = await fetch("/ctf.wasm");
+  const wasmFile = await wasmFileRes.arrayBuffer();
+
+  const zkeyFileRes = await fetch("/proving_key.zkey");
+  const zkeyFile = await zkeyFileRes.arrayBuffer();
 
   const inputs = {
-    secret: secret,
+    secret: "0x" + Buffer.from(secret).toString("hex"),
     secretHash: SECRET_HASH,
     address: address,
   };
@@ -18,8 +17,8 @@ export const generateProof = async (secret: string, address: string) => {
   try {
     const { proof, publicSignals } = await snarkjs.plonk.fullProve(
       inputs,
-      wasmPath,
-      provingKey
+      new Uint8Array(wasmFile),
+      new Uint8Array(zkeyFile)
     );
 
     const calldataBlob = await snarkjs.plonk.exportSolidityCallData(
@@ -27,16 +26,12 @@ export const generateProof = async (secret: string, address: string) => {
       publicSignals
     );
 
-    console.log(calldataBlob);
+    const splitProofAndPubSigs = calldataBlob.split("]");
 
-    const calldata = calldataBlob.split("]");
+    const proofArrayStr = splitProofAndPubSigs[0] + "]";
+    const proofArray = JSON.parse(proofArrayStr);
 
-    console.log(`proof: ${calldata[0]}`);
-
-    return {
-      proof: JSON.parse(calldata[0] + "]"),
-      publicSignals: JSON.parse(calldata[1] + "]"),
-    };
+    return proofArray;
   } catch (error) {
     console.error(error);
     throw new Error("internal server error");
